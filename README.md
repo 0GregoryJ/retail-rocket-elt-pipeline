@@ -14,7 +14,7 @@ An ELT pipeline and dimensional data warehouse for analyzing Retail Rocket event
 
 
 ## Overview
-The Retail Rocket dataset is one of the largest publicly available e-commerce event datasets, containing data on over 1 million site visitors and 2 million site events from May to September of 2015. This project builds a containerized pipeline that:
+The Retail Rocket dataset is one of the largest publicly available e-commerce event datasets, containing data on over 1 million site visitors, 2 million site events, and 20 million product properties from May to September of 2015. This project builds a containerized pipeline that:
 
 - Ingests raw `.csv` files with PySpark.
 - Models data into a galaxy schema with dbt.
