@@ -1,6 +1,6 @@
-pandas
-pyspark
-psycopg2
-python-dotenv
-dbt-metricflow[dbt-postgres]
-pytest
+pandas==3.0.5
+pyspark==4.2.0
+psycopg2==2.9.12
+python-dotenv==1.2.2
+dbt-metricflow[dbt-postgres]==0.13.0
+pytest==9.1.1

@@ -8,7 +8,7 @@ def create_spark_session() -> SparkSession:
     #Creates or retrieves a Spark session.
     return (
         SparkSession.builder
-        .appName("rocket_retail_ingestion")
+        .appName("retail_rocket_ingestion")
         .master("local[*]")
         .config(
             "spark.jars.packages",

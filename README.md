@@ -14,11 +14,11 @@ An ELT pipeline and dimensional data warehouse for analyzing Retail Rocket event
 
 
 ## Overview
-The retail rocket dataset is one of the largest public available e-commerce event datasets, contianing data on over 1 million site visitors and 2 million site events from May to September of 2015. This project builds a containerized pipeline that:
+The Retail Rocket dataset is one of the largest publicly available e-commerce event datasets, containing data on over 1 million site visitors and 2 million site events from May to September of 2015. This project builds a containerized pipeline that:
 
 - Ingests raw `.csv` files with PySpark.
 - Models data into a galaxy schema with dbt.
-- Defines a semantic layer for goverened joins and metrics.
+- Defines a semantic layer for governed joins and metrics.
 - Tests and logs all pipeline steps from ingestion to visualization.
 
 ## Architecture
@@ -142,7 +142,7 @@ Four semantic models in `dbt/models/semantic/` sit on top of the marts and decla
 
 Across May–September 2015, the site recorded **1.76M sessions**, **1.41M unique visitors**, and **2.76M events**, but only **22.5K transactions** — a session conversion rate of **0.81%**.
 
-Looking at average session durations and the session duration vs. abandonded carts scatter plot, a lever to drive conversion becomes apparent: increasing session duration. The scatter plot shows an overwhelming majority of abandonded cart sessions have durations below 3 minutes. Extending sessions beyond this threshhold may be a worthwhile initiative.
+Looking at average session durations and the session duration vs. abandoned carts scatter plot, a lever to drive conversion becomes apparent: increasing session duration. The scatter plot shows an overwhelming majority of abandoned cart sessions have durations below 3 minutes. Extending sessions beyond this threshold may be a worthwhile initiative.
 
 ## Getting Started
 
