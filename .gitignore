@@ -1,0 +1,9 @@
+.venv/
+data/raw/*.csv
+ingestion/src/__pycache__/
+.env
+logs/
+target/
+ingestion/tests/__pycache__/
+.pytest_cache/
+.DS_Store

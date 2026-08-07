@@ -1,0 +1,6 @@
+pandas
+pyspark
+psycopg2
+python-dotenv
+dbt-metricflow[dbt-postgres]
+pytest
