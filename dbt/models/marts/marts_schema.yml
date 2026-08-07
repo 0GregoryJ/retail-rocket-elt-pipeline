@@ -1,0 +1,329 @@
+version: '1.0.0'
+
+models:
+  - name: fct_events
+    description: "Fact events table - 1 row per event."
+
+    columns:
+      - name: event_id
+        description: "Event ID"
+        tests:
+          - not_null
+          - unique
+
+      - name: visitor_id
+        description: "Visitor ID"
+        tests:
+          - not_null
+
+      - name: item_id
+        description: "Item ID"
+        tests:
+          - not_null
+
+      - name: transaction_id
+        description: "Transaction ID"
+
+      - name: event_timestamp
+        description: "Event Timestamp"
+        tests:
+          - not_null
+
+      - name: event_date
+        description: "Event Date"
+        tests:
+          - not_null
+
+      - name: event_type
+        description: "Event Type"
+        tests:
+          - not_null
+
+      - name: event_sequence_number
+        description: "Event Sequence Number"
+
+      - name: seconds_since_previous_event
+        description: "Seconds Since Previous Event"
+
+  - name: fct_sessions
+    description: "Fact sessions table - 1 row per session."
+    columns:
+      - name: session_id
+        description: "Session ID"
+        tests:
+          - not_null
+          - unique
+
+      - name: visitor_id
+        description: "Visitor ID"
+        tests:
+          - not_null
+
+      - name: session_started_at
+        description: "Session Started At"
+        tests:
+          - not_null
+
+      - name: session_ended_at
+        description: "Session Ended At"
+        tests:
+          - not_null
+
+      - name: session_date
+        description: "Session Date"
+        tests:
+          - not_null
+
+      - name: session_duration_seconds
+        description: "Session Duration Seconds"
+        tests:
+          - not_null
+
+      - name: event_count
+        description: "Event Count"
+        tests:
+          - not_null
+
+      - name: view_count
+        description: "View Count"
+        tests:
+          - not_null
+
+      - name: add_to_cart_count
+        description: "Add To Cart Count"
+        tests:
+          - not_null
+
+      - name: transaction_count
+        description: "Transaction Count"
+        tests:
+          - not_null
+
+      - name: distinct_item_count
+        description: "Distinct Item Count"
+        tests:
+          - not_null
+
+      - name: has_view
+        description: "Has View"
+        tests:
+          - not_null
+
+      - name: has_add_to_cart
+        description: "Has Add To Cart"
+        tests:
+          - not_null
+
+      - name: has_transaction
+        description: "Has Transaction"
+        tests:
+          - not_null
+
+      - name: is_single_event_session
+        description: "Is Single Event Session"
+        tests:
+          - not_null
+
+      - name: first_event_type
+        description: "First Event Type"
+        tests:
+          - not_null
+
+      - name: last_event_type
+        description: "Last Event Type"
+        tests:
+          - not_null
+
+      - name: seconds_to_first_view
+        description: "Seconds To First View"
+
+      - name: seconds_to_first_add_to_cart
+        description: "Seconds To First Add To Cart"
+
+      - name: seconds_to_first_transaction
+        description: "Seconds To First Transaction"
+
+  - name: dim_items
+    description: "Item dimension table - 1 row per item."
+    columns:
+      - name: item_id
+        description: "Item ID"
+        tests:
+          - not_null
+          - unique
+
+      - name: category_id
+        description: "Category ID"
+
+      - name: is_available
+        description: "Is Available"
+
+      - name: category_updated_at
+        description: "Category Updated At"
+
+      - name: available_updated_at
+        description: "Available Updated At"
+
+  - name: int_category_hierarchy
+    description: "Intermediate category hierarchy table - 1 row per category."
+    columns:
+      - name: category_id
+        description: "Category ID"
+        tests:
+          - not_null
+          - unique
+
+      - name: parent_category_id
+        description: "Parent Category ID"
+
+      - name: root_category_id
+        description: "Root Category ID"
+        tests:
+          - not_null
+
+      - name: category_depth
+        description: "Category Depth"
+        tests:
+          - not_null
+
+      - name: category_path
+        description: "Category Path"
+        tests:
+          - not_null
+
+  - name: dim_categories
+    description: "Category dimension table - 1 row per category."
+    columns:
+      - name: category_id
+        description: "Category ID"
+        tests:
+          - not_null
+          - unique
+
+      - name: parent_category_id
+        description: "Parent Category ID"
+
+      - name: root_category_id
+        description: "Root Category ID"
+        tests:
+          - not_null
+
+      - name: category_depth
+        description: "Category Depth"
+        tests:
+          - not_null
+
+      - name: category_path
+        description: "Category Path"
+        tests:
+          - not_null
+
+      - name: is_root_category
+        description: "Is Root Category"
+        tests:
+          - not_null
+
+      - name: category_label
+        description: "Category Label"
+        tests:
+          - not_null
+
+      - name: root_category_label
+        description: "Root Category Label"
+        tests:
+          - not_null
+
+  - name: dim_date
+    description: "Date dimension table - 1 row per date."
+
+    time_spine:
+      standard_granularity_column: date
+
+    columns:
+      - name: date_id
+        description: "Date ID"
+        tests:
+          - not_null
+          - unique
+
+      - name: date
+        description: "Date"
+        granularity: day
+        tests:
+          - not_null
+          - unique
+
+      - name: day_of_week_number
+        description: "Day Of Week Number"
+        tests:
+          - not_null
+
+      - name: day_name
+        description: "Day Name"
+        tests:
+          - not_null
+
+      - name: day_of_month
+        description: "Day Of Month"
+        tests:
+          - not_null
+
+      - name: day_of_year
+        description: "Day Of Year"
+        tests:
+          - not_null
+
+      - name: is_weekend
+        description: "Is Weekend"
+        tests:
+          - not_null
+
+      - name: week_start_date
+        description: "Week Start Date"
+        tests:
+          - not_null
+
+      - name: week_of_year
+        description: "Week Of Year"
+        tests:
+          - not_null
+
+      - name: month_number
+        description: "Month Number"
+        tests:
+          - not_null
+
+      - name: month_name
+        description: "Month Name"
+        tests:
+          - not_null
+
+      - name: month_start_date
+        description: "Month Start Date"
+        tests:
+          - not_null
+
+      - name: quarter_number
+        description: "Quarter Number"
+        tests:
+          - not_null
+
+      - name: quarter_name
+        description: "Quarter Name"
+        tests:
+          - not_null
+
+      - name: quarter_start_date
+        description: "Quarter Start Date"
+        tests:
+          - not_null
+
+      - name: year
+        description: "Year"
+        tests:
+          - not_null
+
+      - name: year_start_date
+        description: "Year Start Date"
+        tests:
+          - not_null
