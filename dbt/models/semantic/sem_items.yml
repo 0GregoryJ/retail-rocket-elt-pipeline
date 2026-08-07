@@ -1,0 +1,20 @@
+version: 2
+
+semantic_models:
+  - name: items
+    description: One item per row.
+    model: ref('dim_items')
+
+    entities:
+      - name: item
+        type: primary
+        expr: item_id
+
+      - name: category
+        type: foreign
+        expr: category_id
+
+    dimensions:
+      - name: is_available
+        description: Whether the item's latest known state is available.
+        type: categorical

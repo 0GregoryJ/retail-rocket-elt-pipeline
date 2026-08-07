@@ -1,0 +1,224 @@
+version: 2
+
+semantic_models:
+  - name: sessions
+    description: One row per session.
+    model: ref('fct_sessions')
+
+    defaults:
+      agg_time_dimension: session_date
+
+    entities:
+      - name: session
+        type: primary
+        expr: session_id
+
+      - name: visitor
+        type: foreign
+        expr: visitor_id
+
+    dimensions:
+      - name: session_date
+        type: time
+        type_params:
+          time_granularity: day
+
+      - name: has_view
+        type: categorical
+
+      - name: has_add_to_cart
+        type: categorical
+
+      - name: has_transaction
+        type: categorical
+
+      - name: is_single_event_session
+        type: categorical
+
+      - name: first_event_type
+        type: categorical
+
+      - name: last_event_type
+        type: categorical
+
+    measures:
+      - name: session_count
+        description: Number of sessions.
+        agg: count
+        expr: session_id
+
+      - name: total_session_events
+        description: Total events across sessions.
+        agg: sum
+        expr: event_count
+
+      - name: total_session_duration_seconds
+        description: Total session duration in seconds.
+        agg: sum
+        expr: session_duration_seconds
+
+      - name: total_session_views
+        agg: sum
+        expr: view_count
+
+      - name: total_session_add_to_carts
+        agg: sum
+        expr: add_to_cart_count
+
+      - name: total_session_transactions
+        agg: sum
+        expr: transaction_count
+
+metrics:
+  - name: total_sessions
+    label: Total Sessions
+    description: Total number of derived visitor sessions.
+    type: simple
+    type_params:
+      measure: session_count
+
+  - name: total_session_duration_seconds
+    label: Total Session Duration
+    description: Total duration in seconds across all sessions.
+    type: simple
+    type_params:
+      measure: total_session_duration_seconds
+
+  - name: total_session_events
+    label: Total Session Events
+    description: Total number of events across all sessions.
+    type: simple
+    type_params:
+      measure: total_session_events
+
+  - name: total_session_views
+    label: Total Session Views
+    description: Total number of view events across all sessions.
+    type: simple
+    type_params:
+      measure: total_session_views
+
+  - name: total_session_add_to_carts
+    label: Total Session Add-to-Carts
+    description: Total number of add-to-cart events across all sessions.
+    type: simple
+    type_params:
+      measure: total_session_add_to_carts
+
+  - name: total_session_transactions
+    label: Total Session Transactions
+    description: Total number of transaction events across all sessions.
+    type: simple
+    type_params:
+      measure: total_session_transactions
+
+  - name: converted_sessions
+    label: Converted Sessions
+    description: Number of sessions containing at least one transaction.
+    type: simple
+    type_params:
+      measure: session_count
+    filter: |
+      {{ Dimension('session__has_transaction') }} = true
+
+  - name: cart_sessions
+    label: Cart Sessions
+    description: Number of sessions containing at least one add-to-cart event.
+    type: simple
+    type_params:
+      measure: session_count
+    filter: |
+      {{ Dimension('session__has_add_to_cart') }} = true
+
+  - name: abandoned_cart_sessions
+    label: Abandoned Cart Sessions
+    description: >
+      Number of sessions containing an add-to-cart event but no
+      transaction event.
+    type: simple
+    type_params:
+      measure: session_count
+    filter: |
+      {{ Dimension('session__has_add_to_cart') }} = true
+      and {{ Dimension('session__has_transaction') }} = false
+
+  - name: average_events_per_session
+    label: Average Events per Session
+    description: Average number of events occurring within a session.
+    type: ratio
+    type_params:
+      numerator: total_session_events
+      denominator: total_sessions
+
+  - name: average_views_per_session
+    label: Average Views per Session
+    description: Average number of view events occurring within a session.
+    type: ratio
+    type_params:
+      numerator: total_session_views
+      denominator: total_sessions
+
+  - name: average_add_to_carts_per_session
+    label: Average Add-to-Carts per Session
+    description: >
+      Average number of add-to-cart events occurring within a session.
+    type: ratio
+    type_params:
+      numerator: total_session_add_to_carts
+      denominator: total_sessions
+
+  - name: average_transactions_per_session
+    label: Average Transactions per Session
+    description: >
+      Average number of transaction events occurring within a session.
+    type: ratio
+    type_params:
+      numerator: total_session_transactions
+      denominator: total_sessions
+
+  - name: average_session_duration_seconds
+    label: Average Session Duration
+    description: Average duration of a session in seconds.
+    type: ratio
+    type_params:
+      numerator: total_session_duration_seconds
+      denominator: total_sessions
+
+  - name: session_conversion_rate
+    label: Session Conversion Rate
+    description: Percentage of sessions containing at least one transaction.
+    type: ratio
+    type_params:
+      numerator:
+        name: total_sessions
+        filter: |
+          {{ Dimension('session__has_transaction') }} = true
+      denominator: total_sessions
+
+  - name: session_cart_rate
+    label: Session Cart Rate
+    description: Percentage of sessions containing an add-to-cart event.
+    type: ratio
+    type_params:
+      numerator:
+        name: total_sessions
+        filter: |
+          {{ Dimension('session__has_add_to_cart') }} = true
+      denominator: total_sessions
+
+  - name: cart_abandonment_rate
+    label: Cart Abandonment Rate
+    description: >
+      Percentage of sessions with an add-to-cart event that did not
+      contain a transaction.
+    type: ratio
+    type_params:
+      numerator:
+        name: total_sessions
+        filter: |
+          {{ Dimension('session__has_add_to_cart') }} = true
+          and {{ Dimension('session__has_transaction') }} = false
+      denominator:
+        name: total_sessions
+        filter: |
+          {{ Dimension('session__has_add_to_cart') }} = true

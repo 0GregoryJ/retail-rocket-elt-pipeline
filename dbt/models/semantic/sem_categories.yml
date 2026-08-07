@@ -1,0 +1,42 @@
+version: 2
+
+semantic_models:
+  - name: categories
+    description: One row per category.
+    model: ref('dim_categories')
+
+    entities:
+      - name: category
+        type: primary
+        expr: category_id
+
+    dimensions:
+      - name: parent_category_id
+        description: Immediate parent category identifier.
+        type: categorical
+
+      - name: root_category_id
+        description: Highest-level category identifier in the hierarchy.
+        type: categorical
+
+      - name: category_depth
+        description: >
+          Category position in the hierarchy, where 1 represents a
+          root category.
+        type: categorical
+
+      - name: category_path
+        description: Full hierarchy path from the root to the category.
+        type: categorical
+
+      - name: is_root_category
+        description: Whether the category is a root category.
+        type: categorical
+
+      - name: category_label
+        description: Display label for the category.
+        type: categorical
+
+      - name: root_category_label
+        description: Display label for the category's root category.
+        type: categorical
